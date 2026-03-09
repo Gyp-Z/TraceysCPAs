@@ -1,0 +1,680 @@
+/**
+ * layout.css
+ * Responsibility: Structural Layout, Sections, Grids, and Page-Level Mechanics.
+ * 
+ * This file handles the major structural blocks of the site, including
+ * the Hero section, Founders section, Map, and Footer.
+ */
+
+/* ===================================
+   Section Headers
+   Standardized headers for all major page sections (Services, Team, etc.).
+   Includes the "underline" divider visual pattern.
+   =================================== */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-divider {
+    height: 3px;
+    width: 60px;
+    background-color: var(--accent-color);
+    margin: 0 auto 1.5rem auto;
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* ===================================
+   Hero Section
+   The "Above the Fold" area. Uses a full-width background image with
+   a gradient overlay to ensure text readability.
+   =================================== */
+.hero {
+    height: 90vh;
+    /* Occupy most of the viewport */
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background: var(--primary-color);
+    overflow: hidden;
+    margin-top: 90px;
+    /* Offset for fixed navbar */
+}
+
+/* Homepage Hero Override */
+.home-hero {
+    margin-top: 0;
+    padding-top: 90px;
+}
+
+.hero-gradient-overlay {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0) 80%);
+    /* animation: rotateGradient 20s linear infinite; */
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/hero-shore.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.8;
+    z-index: 0;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.70) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    padding: 0 2rem;
+    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    cursor: pointer;
+}
+
+.scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    animation: bounceChevron 2s infinite;
+    margin: 0 auto;
+}
+
+@keyframes bounceChevron {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: translateY(0) rotate(45deg);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(10px) rotate(45deg);
+    }
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 3.5rem;
+    opacity: 0.9;
+    font-weight: 300;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   Firm & Founder Sections
+   =================================== */
+/* Full Height Hero Utility */
+.full-height-hero {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* Ensure no unexpected margin collapse */
+    margin-top: 0 !important;
+}
+
+/* ===================================
+   Firm & Founder Sections
+   =================================== */
+.firm {
+    /* Darkened Overlay for Transparent Nav Support */
+    background-image: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('../assets/firm-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Full Height enforced */
+    min-height: 100vh;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.firm-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    /* Reduced padding to fit height */
+    padding-top: 2rem;
+}
+
+/* Dark Mode Text Overrides for Firm Section */
+.firm .section-title {
+    color: white;
+}
+
+.firm .section-divider {
+    background-color: var(--accent-color);
+}
+
+.firm-content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+    /* Slate 300 for readability on dark */
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.founder {
+    /* Removed white background to match Team section per user request */
+    padding: 6rem 0;
+}
+
+.founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: center;
+}
+
+.founder-img-wrapper {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+}
+
+.founder-grid img {
+    box-shadow: var(--shadow-xl);
+    border-radius: var(--radius-sm);
+    border: 3px solid white;
+    width: 100%;
+    display: block;
+}
+
+/* Explicit Founder Image Styling */
+.founder-grid img {
+    max-width: 350px;
+    /* Smaller image */
+    width: 100%;
+    height: auto;
+    border-radius: 20px !important;
+    /* Force visible rounding */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    /* Center in its grid cell */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    /* Strong shadow as requested */
+}
+
+/* Rounded Team Images */
+.team-img {
+    border-radius: 20px !important;
+    /* Force rounded square */
+    border: 3px solid white;
+    object-fit: cover;
+}
+
+.founder-bio h3 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.founder-bio p {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* ===================================
+   Map Section
+   =================================== */
+.map-section {
+    height: 400px;
+    width: 100%;
+}
+
+.map-container {
+    width: 100%;
+    height: 100%;
+}
+
+.map-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Filter removed for default colors */
+}
+
+/* ===================================
+   Contact Section
+   =================================== */
+.contact {
+    position: relative;
+    background-color: var(--primary-color);
+    color: white;
+    /* Removed direct background-image to use pseudo-element layering */
+}
+
+/* Image Layer (Matches Hero .hero-background) */
+.contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/hero-shore.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.6;
+    /* Darkened: 60% opacity on Navy base */
+    z-index: 1;
+}
+
+/* Gradient Overlay Layer (Darker + Radial Vignette) */
+.contact::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.80) 100%);
+    z-index: 2;
+}
+
+.contact .container {
+    position: relative;
+    z-index: 3;
+    /* Ensure content is above both layers */
+}
+
+.contact.section-padding {
+    padding: 0 !important;
+    /* Removed aggressive padding */
+    min-height: 100vh;
+    /* One single page fit */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.contact .section-title,
+.contact .section-subtitle {
+    color: white !important;
+}
+
+/* Hard override for footer spacing to remove "plain navy space" */
+/* Hard override for footer spacing to remove "plain navy space" */
+footer {
+    margin-top: -2px;
+    /* Tight connection */
+    padding-top: 3rem !important;
+    /* Compact top padding */
+    padding-bottom: 1rem !important;
+    /* Compact bottom padding */
+    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.contact .section-divider {
+    background-color: var(--accent-color);
+}
+
+.contact-grid {
+    display: grid;
+    /* User reported wrapping issues with auto-fit. Forcing 3 columns on desktop. */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.tax-deadlines {
+    margin-bottom: 5rem;
+    /* Increased separation as requested */
+    background: white;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadline-date {
+    font-weight: 700;
+    color: #dc2626;
+    /* Vibrant red dates */
+}
+
+.deadline-link {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-decoration: underline;
+    transition: var(--transition-fast);
+}
+
+.deadline-link:hover {
+    color: white;
+}
+
+.firm .section-header {
+    /* Push title down further as requested */
+    margin-top: 6rem;
+    /* Reduce space below title */
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* ===================================
+   Responsive Layout Adjustments
+   =================================== */
+@media (max-width: 900px) {
+
+    /* Fix overlap on mobile */
+    .hero {
+        height: auto;
+        /* Ensure it matches the full-height utility */
+        min-height: 100vh;
+        padding: 8rem 0 4rem 0;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.15rem;
+    }
+
+    .section-padding {
+        padding: 4rem 0;
+    }
+
+    .founder-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        justify-items: center;
+        /* Center content on mobile stack */
+        text-align: center;
+        /* Center text on mobile */
+    }
+
+    /* Stack layout for contact grid on mobile */
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .founder-img-wrapper {
+        height: 300px;
+    }
+}
+
+/* ===================================
+   Investments Access Grid
+   =================================== */
+.access-grid.single-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    /* Widened from 900px per user request */
+    margin: 2rem auto 0 auto;
+}
+
+/* Specific override for the Single Card layout in Investments */
+.client-access-section .access-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: row !important;
+    /* FORCE ROW Override */
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4rem;
+    transition: transform 0.3s ease;
+    text-align: left;
+}
+
+.client-access-section .access-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image-left {
+    flex: 0 0 55%;
+    /* Increased width for larger image */
+    max-width: 55%;
+}
+
+.card-content-right {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-content-right h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.card-content-right p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.access-dashboard-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* BrokerCheck Button Styling */
+.brokercheck-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem 2rem;
+    /* Wider padding */
+    font-size: 0.95rem;
+    text-transform: none;
+    letter-spacing: normal;
+    background-color: white;
+    /* Explicit white bg */
+    border: 1px solid #e2e8f0;
+    /* Light border by default */
+    border-radius: 50px;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    width: 100%;
+    /* Ensure it fills availability */
+    max-width: 800px;
+    /* Even longer to prevent wrap */
+    margin: 0 auto;
+    white-space: nowrap;
+    /* Force single line */
+}
+
+.brokercheck-btn:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background-color: #f8fafc;
+    /* Subtle hover bg */
+    color: var(--primary-color);
+    /* Keep text navy */
+}
+
+/* Ensure icon stays original color or behaves well */
+.brokercheck-btn .brokercheck-icon {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    filter: none;
+    /* Prevent unwanted color shifts */
+}
+
+@media (max-width: 900px) {
+    .access-grid.single-card {
+        margin-top: 1rem;
+        display: block;
+        /* improved flow */
+        height: auto;
+        margin-bottom: 4rem;
+        /* Force space/push brokercheck button down */
+    }
+
+    /* Override the specific desktop selector */
+    .client-access-section .access-card {
+        flex-direction: column !important;
+        /* Force Stack on Mobile */
+        text-align: center;
+        gap: 2rem;
+        padding: 2rem;
+        height: auto !important;
+        /* Ensure it grows */
+        min-height: 0;
+    }
+
+    .card-image-left {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .card-content-right {
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        padding: 0 1rem;
+        /* Safe zone */
+        box-sizing: border-box;
+    }
+
+    /* Ensure text realignment on mobile if needed */
+    .access-card {
+        text-align: center;
+    }
+
+    /* Fix BrokerCheck Button on Mobile */
+    .brokercheck-btn {
+        width: 100%;
+        max-width: 100%;
+        white-space: normal;
+        /* Allow wrap */
+        padding: 1rem;
+        flex-direction: column;
+        /* Stack icon and text */
+        height: auto;
+        text-align: center;
+        border-radius: 12px;
+        /* Softer radius for multi-line */
+    }
+}

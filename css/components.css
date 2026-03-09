@@ -1,0 +1,1466 @@
+/**
+ * components.css
+ * Responsibility: Reusable UI Components, Navigation, and Interactive Elements.
+ * 
+ * This file acts as the library for all standalone UI patterns used across the site.
+ * It strictly handles the styling for:
+ * - Navigation Bar (Fixed positioning, dropdowns)
+ * - Buttons (Primary, Secondary, Outline variants)
+ * - Accordions (Services, Tax Center, Team, Tips)
+ * - Cards (Investment, Client Access, Contact)
+ * - Carousels (Firm photos, News/Tips)
+ * - Engagement Widget (Fixed bottom-right toaster)
+ */
+
+/* ===================================
+   Navigation (Navbar)
+   =================================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    height: 90px;
+    background-color: rgba(15, 23, 42, var(--nav-alpha, 0.85));
+    /* Dynamic alpha */
+    backdrop-filter: blur(var(--nav-blur, 12px));
+    /* Dynamic blur */
+    -webkit-backdrop-filter: blur(var(--nav-blur, 12px));
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    transition: box-shadow var(--transition-base), border-bottom var(--transition-base);
+    /* Removed background/filter transition to let JS drive it directly */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Transparent Navbar State (for Homepage) */
+.navbar.transparent-nav {
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px solid transparent;
+
+    /* Initial state for JS interpolation */
+    --nav-alpha: 0;
+    --nav-blur: 0px;
+}
+
+.navbar.transparent-nav.scrolled {
+    background-color: rgba(15, 23, 42, var(--nav-alpha));
+    backdrop-filter: blur(var(--nav-blur));
+    -webkit-backdrop-filter: blur(var(--nav-blur));
+    box-shadow: var(--shadow-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 5px;
+    /* Space for underline */
+}
+
+/* Home Indicator Underline */
+.nav-brand::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    /* Slighty thicker for visibility */
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.nav-brand.active::after {
+    width: 100%;
+}
+
+.nav-logo-img {
+    height: 60px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 1rem;
+    position: relative;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.3px;
+    /* Slightly tighter */
+    font-size: 0.95rem;
+    /* Slightly smaller to prevent wrap */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: white;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width var(--transition-base);
+}
+
+.nav-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: white !important;
+    /* Force visibility against navy navbar */
+    transition: all var(--transition-fast);
+}
+
+.nav-link:hover::before,
+.nav-link.active::before,
+.nav-item.active .nav-link::before {
+    width: 100%;
+}
+
+/* Dropdown Sub-menus */
+.nav-item.dropdown {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dropdown-toggle::after {
+    content: '▾';
+    font-size: 0.8em;
+    display: inline-block;
+    margin-left: 6px;
+    transition: transform var(--transition-fast);
+}
+
+.nav-item.dropdown:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 220px;
+    box-shadow: var(--shadow-xl);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0.4s;
+    z-index: 1001;
+    border-top: 3px solid var(--accent-color);
+    pointer-events: none;
+}
+
+/* Dropdown Bridge: Prevents hover loss by connecting nav link to menu */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    /* Spans the gap to the navbar */
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: transparent;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--bg-secondary);
+    color: var(--accent-color);
+}
+
+/* Sub-Navbar (Sticky for About Page) */
+.sub-navbar {
+    position: sticky;
+    top: 90px;
+    /* Precisely below the main navbar */
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 990;
+    padding: 0.75rem 0;
+    box-shadow: var(--shadow-sm);
+    display: block;
+    /* Ensure visibility */
+}
+
+.sub-nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.sub-nav-link {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    /* Pill shape */
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sub-nav-link:hover,
+.sub-nav-link.active {
+    color: white;
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+}
+
+@media (max-width: 768px) {
+    .sub-navbar {
+        top: 90px;
+        overflow-x: auto;
+        padding: 0.5rem 0;
+    }
+
+    .sub-nav-container {
+        justify-content: flex-start;
+        padding-left: 1rem;
+        gap: 1rem;
+        flex-wrap: nowrap;
+        /* Horizontal scroll on mobile */
+    }
+
+    .sub-nav-link {
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
+    }
+}
+
+/* ===================================
+   Buttons
+   ================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary:hover {
+    background-color: white;
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.nav-link-portal {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-sm);
+    color: white !important;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.nav-link-portal:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Remove the standard nav underline from this button */
+.nav-link-portal::before {
+    display: none !important;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* ===================================
+   Accordions (Global Pattern)
+   =================================== */
+/* 
+   IMPORTANT: These rules ensure that content starts hidden 
+   and expands correctly via JS.
+*/
+.service-content,
+.tax-content,
+.team-content,
+.tip-accordion-content,
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-base);
+    background-color: var(--bg-secondary);
+}
+
+.service-accordion-item,
+.tax-accordion-item,
+.team-accordion-item,
+.tip-accordion-item {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+    /* Increased margin for better separation */
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-base);
+}
+
+.service-accordion-item:hover,
+.tax-accordion-item:hover,
+.team-accordion-item:hover,
+.tip-accordion-item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.service-accordion-item.active,
+.tax-accordion-item.active,
+.team-accordion-item.active,
+.tip-accordion-item.active {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.accordion-header,
+.tax-header,
+.team-header,
+.tip-accordion-header {
+    padding: 2rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color var(--transition-fast);
+}
+
+.service-header {
+    padding: 2rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+    transition: background-color var(--transition-fast);
+}
+
+.service-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.service-icon-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: invert(8%) sepia(34%) saturate(2466%) hue-rotate(189deg) brightness(91%) contrast(92%);
+}
+
+.accordion-header:hover,
+.service-header:hover,
+.tax-header:hover,
+.team-header:hover {
+    background-color: var(--bg-secondary);
+}
+
+/* Tip Accordion Custom Styling */
+.tip-accordion-item {
+    background: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.tip-accordion-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tip-accordion-header {
+    padding: 2rem;
+}
+
+.tip-toggle-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    font-weight: 300;
+    transition: transform var(--transition-base);
+}
+
+.tip-accordion-item.active .tip-toggle-icon {
+    transform: rotate(45deg);
+}
+
+/* New Accordion Toggle Icon Styling */
+[class$="-toggle-icon"] {
+    font-size: 1.5rem;
+    font-weight: 300;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    transition: all var(--transition-base);
+}
+
+[class*="-accordion-item"].active [class$="-toggle-icon"],
+.tip-accordion-item.active .tip-toggle-icon {
+    transform: rotate(45deg);
+    color: #ff4d4d !important;
+    /* Specific vibrant red requested */
+}
+
+.service-content-inner,
+.tax-content-inner,
+.team-content-inner,
+.tip-content-inner {
+    padding: 3rem;
+    overflow: hidden;
+}
+
+/* Services Formatting */
+.service-content-inner p {
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+/* Bolded headers with separator line */
+.service-content-inner strong,
+.team-content-inner h4 {
+    display: block;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    /* The requested "line for separation" */
+}
+
+/* Custom Checkmark Lists */
+.service-content-inner ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+}
+
+.service-content-inner li {
+    position: relative;
+    padding-left: 2.5rem;
+    /* Space for checkmark */
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.service-content-inner li::before {
+    content: '✓';
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    color: var(--accent-color);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.tax-content-inner ul {
+    list-style: none;
+    padding: 0;
+}
+
+.tax-content-inner ul li {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.tax-content-inner ul li:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.tax-content-inner strong {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.tax-content-inner p {
+    margin-bottom: 1.25rem;
+    color: var(--text-secondary);
+}
+
+/* ===================================
+   Cards & Grids
+   =================================== */
+.services-intro,
+.investments-intro {
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+}
+
+.investments-subheading {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+    font-family: var(--font-display);
+}
+
+.investments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+}
+
+.investment-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    transition: all var(--transition-base);
+    border: 1px solid transparent;
+}
+
+.investment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-color);
+}
+
+.investment-icon-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
+    filter: invert(8%) sepia(34%) saturate(2466%) hue-rotate(189deg) brightness(91%) contrast(92%);
+    transition: transform var(--transition-base);
+    display: inline-block;
+}
+
+.investment-card:hover .investment-icon-img {
+    transform: scale(1.1);
+}
+
+/* Client Access Sub-section */
+.client-access-section {
+    background: white;
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.access-subtitle {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.access-note {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 3.5rem;
+    border-left: 4px solid var(--accent-color);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.access-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+}
+
+.access-card {
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    transition: var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.access-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-5px);
+    background: white;
+    border-color: var(--primary-color);
+}
+
+.access-card h4 {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.access-card p {
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+
+.broker-check-link {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
+
+.broker-check-link:hover {
+    color: var(--accent-color);
+}
+
+.contact-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-base);
+}
+
+.contact-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+}
+
+.contact-icon-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: transform var(--transition-base);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.contact-card:hover .contact-icon-img {
+    transform: scale(1.1);
+}
+
+/* ===================================
+   Team Section Specifics
+   =================================== */
+.team-bio-wrapper {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.team-image-container {
+    flex-shrink: 0;
+    width: 350px;
+    text-align: center;
+}
+
+.team-img {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 3px solid white;
+    margin-bottom: 1rem;
+}
+
+/* ===================================
+   Unified Carousel Component
+   =================================== */
+.carousel-wrapper {
+    max-width: 1000px;
+    width: 100%;
+    /* Ensure it fills the grid cell */
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    border-radius: 30px;
+    /* Very rounded as requested */
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* Stronger premium shadow */
+    background: #f8fafc;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.carousel-container {
+    position: relative;
+    height: 450px;
+    /* Default height */
+}
+
+/* Height variation for the about page "Firm Carousel" */
+.firm-carousel .carousel-container {
+    height: 350px;
+    /* Reduced height as requested */
+}
+
+/* News & Tax Tips Layout - Side by Side on Desktop */
+.tax-tips-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .tax-tips-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        gap: 4rem;
+    }
+
+    /* Ensure carousel and accordion have similar visual height */
+    .news-carousel-wrapper .carousel-container {
+        height: 500px;
+    }
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    /* Removed background */
+    border: none;
+    /* Removed border */
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    z-index: 10;
+    color: var(--primary-color);
+    font-size: 3.5rem;
+    /* Increased size for arrows alone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    /* Removed shadow */
+    transition: all var(--transition-base);
+    padding: 0;
+    opacity: 0.7;
+    /* Subtler default state */
+}
+
+.carousel-btn:hover {
+    color: var(--accent-color);
+    transform: translateY(-50%) scale(1.2);
+    opacity: 1;
+}
+
+.carousel-btn.prev {
+    left: 1.5rem;
+}
+
+.carousel-btn.next {
+    right: 1.5rem;
+}
+
+/* Carousel Dots (Optional) */
+.carousel-dots {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.dot.active {
+    background: var(--accent-color);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+/* Attribution Styling (Maintained) */
+.attribution-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 3rem 0 1rem;
+    text-align: center;
+}
+
+.attribution-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.attribution-list li {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    position: relative;
+}
+
+.attribution-list li:not(:last-child)::after {
+    content: '|';
+    position: absolute;
+    right: -1.25rem;
+    color: var(--border-color);
+}
+
+/* ===================================
+   Smart Engagement Widget
+   =================================== */
+.engagement-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--primary-color);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    z-index: 9999;
+    border-left: 4px solid var(--accent-color);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transform: translateY(100px);
+    opacity: 0;
+    cursor: pointer;
+}
+
+.engagement-widget.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.widget-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.widget-text {
+    font-size: 0.95rem;
+    color: white !important;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+}
+
+.widget-icon-img {
+    filter: brightness(0) invert(1);
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.widget-close {
+    background: none;
+    border: none;
+    color: #ff4d4d !important;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    line-height: 1;
+    margin-left: 0.5rem;
+}
+
+.widget-close:hover {
+    color: #ff0000 !important;
+    transform: scale(1.1);
+}
+
+.widget-progress {
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+/* ===================================
+   Footer
+   =================================== */
+footer {
+    padding: 6rem 0 4rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    font-family: var(--font-display);
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    /* Slightly smaller as requested */
+    transition: all var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: white;
+    padding-left: 5px;
+}
+
+.footer-assets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-asset-link img {
+    height: 35px !important;
+    /* Extremely tight constraint */
+    max-width: 150px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0.8);
+    transition: all var(--transition-fast);
+}
+
+.footer-asset-link img:hover {
+    filter: brightness(1);
+    transform: translateY(-3px);
+}
+
+.footer-qr-img {
+    height: 240px !important;
+    /* Significant scale-up for guaranteed scanability */
+    width: auto;
+    filter: brightness(1) !important;
+    max-width: none !important;
+    display: block;
+    margin: 0 auto;
+}
+
+.footer-legal {
+    text-align: center;
+    margin-top: 5rem;
+    padding-bottom: 2rem;
+}
+
+.legal-text {
+    font-size: 0.78rem;
+    /* Scaled down as requested */
+    line-height: 1.6;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+.footer-legal .legal-text {
+    max-width: 1000px;
+    /* Constrain width only for the bottom section */
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* ===================================
+   Modals (QR Code)
+   =================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.modal-container {
+    position: relative;
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2xl);
+    max-width: 500px;
+    width: 90%;
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2001;
+    text-align: center;
+}
+
+.modal.active .modal-container {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+}
+
+.modal-qr-img {
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    margin: 1rem auto;
+    display: block;
+    border-radius: var(--radius-md);
+}
+
+.modal-caption {
+    margin-top: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.legal-text p {
+    margin-bottom: 1.2rem;
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 90px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 2rem;
+        transform: translateY(-150%);
+        transition: transform var(--transition-base);
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+    }
+
+    .nav-link {
+        color: var(--primary-color);
+    }
+
+    .dropdown-menu {
+        display: block;
+        position: static;
+        background-color: #f8f9fa;
+    }
+
+    .team-bio-wrapper {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .team-img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Improved Mobile Menu Styles */
+@media (max-width: 1350px) {
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        font-size: 1rem;
+        position: relative;
+        padding: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.5px;
+    }
+
+    /* ... existing styles ... */
+
+    /* Improved Mobile Menu Styles */
+    @media (max-width: 1350px) {
+        .nav-toggle {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 90px);
+            background-color: rgba(15, 23, 42, 0.98);
+            flex-direction: column;
+            padding: 3rem 2rem;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            justify-content: flex-start;
+            align-items: center;
+            gap: 2rem;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-menu.active {
+            transform: translateX(0);
+        }
+
+        .nav-link {
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem 0;
+            width: 100%;
+            text-align: center;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link-portal {
+            width: calc(100% + 2rem) !important;
+            /* Breakout width: 100% + 2rem padding */
+            margin: 1rem -1rem !important;
+            /* Negative margin to pull into padding */
+            display: flex !important;
+            /* Flex ensures better centering */
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap !important;
+            /* Prevent stacking */
+            border-bottom: none !important;
+            font-size: 1rem !important;
+            /* Bigger standard text */
+            letter-spacing: 0.5px !important;
+            padding: 1.25rem 0.25rem !important;
+            /* Tall button, minimal side padding */
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            padding-left: 0;
+        }
+
+        .nav-item.dropdown .dropdown-menu {
+            position: static;
+            background-color: transparent;
+            box-shadow: none;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            padding: 0;
+            border-top: none;
+            display: none;
+            text-align: center;
+        }
+
+        .nav-item.dropdown.active .dropdown-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 1rem;
+        }
+
+        .dropdown-menu li a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-menu li a:hover {
+            background: none;
+            color: white;
+        }
+
+        .team-bio-wrapper {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .team-img {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    /* Mobile Engagement Widget - Bottom Sheet Style */
+    @media (max-width: 768px) {
+        .engagement-widget {
+            bottom: 0;
+            right: 0;
+            left: 0;
+            width: 100%;
+            max-width: none;
+            border-radius: 12px 12px 0 0;
+            border: none;
+            border-top: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            transform: translateY(100%);
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .engagement-widget.active {
+            transform: translateY(0);
+        }
+
+        .widget-content {
+            justify-content: space-between;
+        }
+
+        .widget-text {
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .widget-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    }
+
+
+}
+
+/* Tax Center Redesign Overrides */
+.tax-header {
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+}
+
+.tax-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.tax-icon-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: invert(8%) sepia(34%) saturate(2466%) hue-rotate(189deg) brightness(91%) contrast(92%);
+}

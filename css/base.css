@@ -1,0 +1,283 @@
+/**
+ * base.css
+ * Responsibility: Resets, Variables, Typography, and Global Utility Classes.
+ * 
+ * This file establishes the core design tokens (colors, spacing, etc.) 
+ * and base HTML element styling used across the entire site.
+ */
+
+/* ===================================
+   CSS Custom Properties (Variables)
+   =================================== */
+:root {
+    /* 
+       Brand Palette (Navy & Red) 
+       Used to establish a professional, trustworthy identity typical of accounting firms.
+    */
+    --primary-color: #0f172a;
+    /* Deep Navy: Primary text and navbar background */
+    --primary-light: #1e293b;
+    /* Slate 800: Lighter shade for subtle contrast */
+    --primary-dark: #020617;
+    /* Slate 950: Darkest shade for deep backgrounds */
+
+    --accent-color: #dc2626;
+    /* Modern Red: Call-to-actions and highlights */
+    --accent-hover: #b91c1c;
+    /* Darker Red: Interactive hover states */
+    --accent-light: #fca5a5;
+    /* Light Red: Subtle accents or backgrounds */
+
+    --secondary-color: #334155;
+    /* Slate 700: Secondary text */
+
+    /* Text Colors */
+    --text-primary: #1f2937;
+    /* Gray 900: Main body text for readability */
+    --text-secondary: #4b5563;
+    /* Gray 600: Subtitles and supporting text */
+    --text-light: #9ca3af;
+    /* Gray 400: Disabled or placeholder text */
+    --text-on-dark: #ffffff;
+    /* Text on dark backgrounds */
+
+    /* Backgrounds */
+    --bg-primary: #f8fafc;
+    /* Changed to off-white per user request */
+    --bg-white: #ffffff;
+    /* New explicit white for cards */
+    --bg-secondary: #f8fafc;
+    /* Off-white: Alternating sections for visual separation */
+    --bg-dark: #0f172a;
+    /* Dark Navy: Footer or special sections */
+
+    --border-color: #e2e8f0;
+    /* Light Gray: Subtle borders for inputs and cards */
+
+    /* 
+       Shadows 
+       Soft and diffuse spread to create a modern "elevated" feel without harsh lines.
+    */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Typography */
+    --font-primary: 'Rubik', sans-serif;
+    --font-display: 'Rubik', sans-serif;
+
+    /* Spacing System */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2.5rem;
+    --spacing-lg: 5rem;
+    --spacing-xl: 8rem;
+
+    /* Border Radius - Sharp corners for a professional, precise look */
+    --radius-sm: 0px;
+    --radius-md: 2px;
+    --radius-lg: 4px;
+    --radius-xl: 8px;
+
+    /* Transitions - Standard timing functions for UI feel */
+    --transition-fast: 150ms ease-out;
+    /* Hover effects */
+    --transition-base: 300ms ease-out;
+    /* Larger state changes */
+    --transition-slow: 500ms ease-out;
+    /* Complex animations */
+}
+
+/* ===================================
+   Reset & Base Styles
+   =================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    width: 100%;
+    overflow-x: hidden;
+    scroll-padding-top: 20px;
+    /* Minimize gap so titles land near header */
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    background-color: var(--bg-primary);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+p {
+    margin-bottom: 1.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition-fast);
+}
+
+a[href^="mailto:"] {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.tip-source {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+a[href^="mailto:"]:hover,
+.tip-source:hover {
+    text-decoration: underline;
+    color: var(--accent-hover);
+}
+
+ul {
+    list-style: none;
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+.container {
+    max-width: min(98%, 1800px);
+    /* Widened from 95%/1600px per user request */
+    margin: 0 auto;
+    padding: 0 1rem;
+    /* Reduced padding from 1.5rem */
+}
+
+/* Standardized section spacing */
+.section-padding {
+    padding: 8rem 0;
+}
+
+/* Background variants */
+.bg-primary {
+    background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+    background-color: var(--bg-secondary);
+}
+
+.bg-dark {
+    background-color: var(--bg-dark);
+    color: white;
+}
+
+/* South Jersey highlight - vibrant animated gradient */
+/* South Jersey highlight - vibrant animated gradient */
+/* Adds visual interest to the location text in the Hero section */
+.highlight-location {
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(90deg, #00164b 0%, #dc2626 20%, #ffffff 32%, #dc2626 45%, #0032a8c0 63%, #dc2626 78%, #00164b 100%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* Safari/Chrome support */
+    -webkit-text-fill-color: transparent;
+    /* Required for background-clip to work */
+    color: white;
+    /* Fallback */
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.226), 0 2px 4px rgba(0, 0, 0, 0.45);
+    animation: gradient-text 8s ease-in-out infinite;
+    /* Slow, continuous movement */
+}
+
+/* ===================================
+   Animations & Transitions
+   =================================== */
+/* Reveal on Scroll effect classes */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes gradient-text {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes fadeBounce {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rotateGradient {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Global focus states for accessibility */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
