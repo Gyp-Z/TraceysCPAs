@@ -4,6 +4,8 @@ A full redesign of the public-facing website for Tracey & Tracey Certified Publi
 
 **Live site:** [traceycpas.com](https://www.traceycpas.com)
 
+> The live site is the production version currently served to clients. This repository reflects ongoing development and may be ahead of what is deployed.
+
 ---
 
 ## Overview
