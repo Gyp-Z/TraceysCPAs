@@ -1,0 +1,8 @@
+# AI context files — internal only
+AGENTS.md
+CLAUDE.md
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
